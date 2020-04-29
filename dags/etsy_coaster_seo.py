@@ -9,6 +9,7 @@ import re
 import numpy as np
 import os
 import psycopg2
+from datetime import date
 
 
 today = date.today()
