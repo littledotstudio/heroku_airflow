@@ -23,7 +23,7 @@ def get_query_df(query):
     ua = UserAgent()
 
     etsy_page_search = requests.get(etsy_url, {"User-Agent": ua.random})
-    soup_search = BeautifulSoup(etsy_page_search.content,"html")
+    soup_search = BeautifulSoup(etsy_page_search.content,"html", features="html.parser")
     #This is the listing id list
     listing_id = soup_search.find_all("a")
     #This holds the listing url
