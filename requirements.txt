@@ -84,4 +84,3 @@ WTForms==2.2.1
 zope.deprecation==4.4.0
 fake-useragent
 bs4
-urllib2
