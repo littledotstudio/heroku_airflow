@@ -104,4 +104,4 @@ for i in df.index:
     """ % (df['list_id'], df['title'], df['tags'],df['descriptions'], df['shop'], df['date'], df['rank'], df['tag'])
     single_insert(conn, query)
 # Close the connection
-    conn.close()
+#conn.close()
