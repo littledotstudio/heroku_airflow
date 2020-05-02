@@ -27,7 +27,7 @@ t1 = BashOperator(
 
 t2 = BashOperator(
     task_id='get_luggage_rankings',
-    bash_command='cd dags && python etsy_luggage_seo.py',
+    bash_command='cd dags && python etsy_luggagetag_seo.py',
     dag=dag
 )
 
