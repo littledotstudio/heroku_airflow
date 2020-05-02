@@ -46,22 +46,17 @@ def get_query_df(query):
         temp_description2 = re.search(r'meta content="(.*?)" name=', str(temp_description)).group(1)
         descriptions.append(temp_description2)
         # Shop Owner
-        temp_shop = soup_product.find_all("meta")[24]
+        temp_shop = soup_product.find_all("meta")[26]
         temp_shop2 = re.search(r'meta content="(.*?)" property=', str(temp_shop)).group(1)
         shop.append(temp_shop2)
-        keywords_list = soup_product.find_all("a", {"class":"btn btn-secondary"})
-        temp_tags = []
-        for i in range(0, len(keywords_list)):
-            temp_tags2 = re.search(r'blank">(.*?)</a>', str(keywords_list[i])).group(1)
-            temp_tags.append(temp_tags2)
-        temp_tags = [x for x in temp_tags if "&" not in x ]
-        #temp_tags = " ".join(word for word in temp_tags).lower()
-        tags.append(temp_tags)
+        keyword_list = soup_product.find_all("h2")[3]
+        temp_tags = re.search(r'name">(.*?)</span>', str(keyword_list))
+        temp_tags2 = temp_tags.group(1)
         #time.sleep(1)
     shop = [x.strip("https://www.etsy.com/shop/") for x in shop]
     df = pd.DataFrame({'list_id': list_id_records, 
                        'title': title_records, 
-                       'tags': tags,
+                       'tags': temp_tags2,
                        'descriptions': descriptions,
                        'shop': shop})
     return(df)
@@ -80,9 +75,10 @@ for i in range(0, len(coasters_search)):
     df = df.append(df_temp)
 
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+cur = conn.cursor()
 
 seo_table_insert = ("""
-    INSERT INTO seo (list_id, title, tags, descriptions, shop, dt, rank, tag)
+    INSERT INTO seo (id, title, tags, description, shop, dt, rank, tag)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     ON CONFLICT DO NOTHING;
 """)
