@@ -74,34 +74,19 @@ df = pd.DataFrame()
 for i in range(0, len(coasters_search)):
     print("Getting data for tag: ", coasters_search[i])
     df_temp = get_query_df(coasters_search[i])
-    df_temp['date'] = today
+    df_temp['dt'] = today
     df_temp['rank'] = np.arange(len(df_temp))
     df_temp['tag'] = coasters_search[i]
     df = df.append(df_temp)
 
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-conn.set_session(autocommit=True)
 
+seo_table_insert = ("""
+    INSERT INTO seo (list_id, title, tags, descriptions, shop, dt, rank, tag)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    ON CONFLICT DO NOTHING;
+""")
 
-def single_insert(conn, insert_req):
-    """ Execute a single INSERT request """
-    cursor = conn.cursor()
-    try:
-        cursor.execute(insert_req)
-        conn.commit()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print("Error: %s" % error)
-        conn.rollback()
-        cursor.close()
-        return 1
-    cursor.close()
-# Connecting to the database
-# Inserting each row
-# Inserting each row
-for i in df.index:
-    query = """
-    INSERT into seo(id, title, tags, description, shop, dt, rank, tag) values(%s,%s,%s,%s,%s,%s,%s,%s);
-    """ % (df['list_id'], df['title'], df['tags'],df['descriptions'], df['shop'], df['date'], df['rank'], df['tag'])
-    single_insert(conn, query)
-# Close the connection
-#conn.close()
+for i, row in df.iterrows():
+    cur.execute(seo_table_insert, row)
+    conn.commit()
