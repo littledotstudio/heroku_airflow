@@ -19,6 +19,12 @@ dag = DAG(
     schedule_interval='@daily'
 )
 
+t0 = BashOperator(
+    task_id='where_am_i',
+    bash_command='pwd',
+    dag=dag
+)
+
 t1 = BashOperator(
     task_id='get_coaster_rankings',
     bash_command='cd dags && python etsy_coaster_seo.py',
@@ -31,4 +37,4 @@ t2 = BashOperator(
     dag=dag
 )
 
-t1 >> t2
+t0 >> t1 >> t2
