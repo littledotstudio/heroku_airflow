@@ -21,7 +21,7 @@ dag = DAG(
 
 t0 = BashOperator(
     task_id='where_am_i',
-    bash_command='pwd',
+    bash_command='pwd && cd ~ && ls',
     dag=dag
 )
 
