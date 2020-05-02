@@ -27,13 +27,13 @@ t0 = BashOperator(
 
 t1 = BashOperator(
     task_id='get_coaster_rankings',
-    bash_command='cd dags && python etsy_coaster_seo.py',
+    bash_command='cd ~ && cd dags && python etsy_coaster_seo.py',
     dag=dag
 )
 
 t2 = BashOperator(
     task_id='get_luggage_rankings',
-    bash_command='cd dags && python etsy_luggagetag_seo.py',
+    bash_command='cd ~ cd dags && python etsy_luggagetag_seo.py',
     dag=dag
 )
 
