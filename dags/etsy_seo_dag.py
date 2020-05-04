@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 default_args = {
     'owner': 'royh',
-    'start_date': datetime.today() - timedelta(days=1),
+    'start_date': datetime(2020, 5, 5),
     'depends_on_past': False,
     'retries': 3,
     'retry_delay': timedelta(minutes=5),
