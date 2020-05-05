@@ -14,7 +14,7 @@ default_args = {
 
 
 dag = DAG(
-    'shop_sales',
+    'scheduler_testing',
     default_args=default_args,
     schedule_interval='@daily'
 )
